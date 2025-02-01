@@ -1,81 +1,114 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="bg-white rounded-lg shadow-lg p-6">
-    <h2 class="text-2xl font-bold mb-6">Laporkan Sampah</h2>
+<div class="min-h-screen bg-gradient-to-b  py-12">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+      <!-- Header Section -->
+      <div class="bg-green-600 py-6 px-6">
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          Laporkan Sampah
+        </h2>
+        <p class="text-green-50 mt-2">Bantu jaga lingkungan dengan melaporkan sampah di sekitar Anda</p>
+      </div>
 
-    <form action="{{ route('waste-reports.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-      @csrf
+      <form action="{{ route('waste-reports.store') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-8">
+        @csrf
 
-      <!-- Preview Foto -->
-      <div class="space-y-2">
-        <label class="block text-sm font-medium text-gray-700">
-          Foto Sampah
-        </label>
-        <div class="mt-1 flex items-center">
-          <img id="preview" class="hidden w-32 h-32 object-cover rounded-lg">
+        <!-- Photo Upload Section -->
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Foto Sampah
+          </label>
+          <div class="flex flex-col items-center p-6 border-2 border-dashed border-green-200 rounded-lg bg-green-50 hover:bg-green-100 transition-colors">
+            <img id="preview" class="hidden w-48 h-48 object-cover rounded-lg shadow-md mb-4">
+            <input type="file"
+              name="photo"
+              id="photo"
+              accept="image/*"
+              class="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2.5 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-green-600 file:text-white
+                    hover:file:bg-green-700
+                    transition-colors"
+              required
+              onchange="previewImage(this)">
+          </div>
+          @error('photo')
+          <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+          @enderror
         </div>
-        <input type="file"
-          name="photo"
-          id="photo"
-          accept="image/*"
-          class="block w-full text-sm text-gray-500
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-blue-50 file:text-blue-700
-                        hover:file:bg-blue-100"
-          required
-          onchange="previewImage(this)">
-        @error('photo')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-        @enderror
-      </div>
 
-      <!-- Lokasi -->
-      <div class="space-y-2">
-        <label class="block text-sm font-medium text-gray-700">
-          Lokasi
-        </label>
-        <div class="flex gap-2">
-          <input type="text"
-            name="location"
-            id="location"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            required
-            readonly>
-          <button type="button"
-            id="getLocationBtn"
-            class="mt-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-            Dapatkan Lokasi
-          </button>
+        <!-- Location Section -->
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-gray-700">
+            Lokasi
+          </label>
+          <div class="flex gap-3">
+            <input type="text"
+              name="location"
+              id="location"
+              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+              required
+              readonly
+              placeholder="Klik tombol untuk mendapatkan lokasi">
+            <button type="button"
+              id="getLocationBtn"
+              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 whitespace-nowrap">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Lokasi Saya
+            </button>
+          </div>
+          <input type="hidden" name="latitude" id="latitude">
+          <input type="hidden" name="longitude" id="longitude">
+          @error('location')
+          <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+          @enderror
         </div>
-        <input type="hidden" name="latitude" id="latitude">
-        <input type="hidden" name="longitude" id="longitude">
-        @error('location')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-        @enderror
-      </div>
 
-      <!-- Map -->
-      <div id="map" style="height: 400px;" class="rounded-lg"></div>
+        <!-- Map -->
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-gray-700">
+            Peta
+          </label>
+          <div id="map" class="rounded-lg shadow-md border-2 border-green-100"></div>
+        </div>
 
-      <!-- Deskripsi -->
-      <div class="space-y-2">
-        <label class="block text-sm font-medium text-gray-700">
-          Deskripsi (Opsional)
-        </label>
-        <textarea
-          name="description"
-          rows="3"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
-      </div>
+        <!-- Description -->
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-gray-700">
+            Deskripsi (Opsional)
+          </label>
+          <textarea
+            name="description"
+            rows="4"
+            placeholder="Tambahkan detail tentang kondisi sampah..."
+            class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"></textarea>
+        </div>
 
-      <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-        Kirim Laporan
-      </button>
-    </form>
+        <button type="submit" class="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+          Kirim Laporan
+        </button>
+        <!-- batal -->
+        <a href="{{ route('waste-reports.index') }}" class="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+          Batal
+        </a>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -92,18 +125,17 @@
 @push('scripts')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+  // [Previous JavaScript code remains the same]
   let map, marker;
 
   function initMap() {
     console.log('Initializing map...');
-    // Default ke Jakarta
     map = L.map('map').setView([-6.200000, 106.816666], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Tambahkan click event ke map
     map.on('click', function(e) {
       const pos = e.latlng;
       placeMarker(pos);
@@ -124,7 +156,6 @@
     };
 
     navigator.geolocation.getCurrentPosition(
-      // Success callback
       function(position) {
         const pos = {
           lat: position.coords.latitude,
@@ -135,7 +166,6 @@
         placeMarker(pos);
         updateLocation(pos);
       },
-      // Error callback
       function(error) {
         let message = 'Gagal mendapatkan lokasi. ';
         switch (error.code) {
@@ -181,7 +211,6 @@
       draggable: true
     }).addTo(map);
 
-    // Update lokasi saat marker di-drag
     marker.on('dragend', function() {
       const newPos = marker.getLatLng();
       updateLocation(newPos);
@@ -200,7 +229,6 @@
     }
   }
 
-  // Initialize
   document.addEventListener('DOMContentLoaded', function() {
     initMap();
     document.getElementById('getLocationBtn').addEventListener('click', getCurrentLocation);

@@ -17,6 +17,8 @@ return new class extends Migration
       $table->decimal('longitude', 11, 8)->nullable();
       $table->text('description')->nullable();
       $table->enum('status', ['pending', 'processed', 'completed'])->default('pending');
+      $table->foreignId('collector_id')->nullable()->constrained('users')->onDelete('set null');
+      $table->timestamp('collected_at')->nullable();
       $table->timestamps();
     });
   }

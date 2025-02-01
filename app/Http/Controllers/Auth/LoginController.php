@@ -21,7 +21,7 @@ class LoginController extends Controller
   // Override method authenticated untuk custom redirect
   protected function authenticated(Request $request, $user)
   {
-    if ($user->email === 'admin@gmail.com') {
+    if ($user->email === 'fahmi@gmail.com') {
       return redirect()->route('admin.waste-reports.index');
     }
 

@@ -10,18 +10,49 @@ class WasteReportController extends Controller
 {
   public function index()
   {
-    $reports = WasteReport::where('status', 'processed')
+    $reports = WasteReport::whereNull('collector_id')
+      ->where('status', 'pending')
       ->orderBy('created_at', 'desc')
       ->paginate(10);
 
     return view('collector.waste-reports.index', compact('reports'));
   }
 
+  public function myReports()
+  {
+    $userId = auth()->id();
+    $reports = WasteReport::where('collector_id', $userId)
+      ->whereIn('status', ['processed', 'completed'])
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+    return view('collector.waste-reports.my-reports', compact('reports'));
+  }
+
   public function show($id)
   {
-    $report = WasteReport::where('status', 'processed')
+    $userId = auth()->id();
+    $report = WasteReport::where('collector_id', $userId)
       ->findOrFail($id);
     return view('collector.waste-reports.show', compact('report'));
+  }
+
+  public function takeReport($id)
+  {
+    $userId = auth()->id();
+    $report = WasteReport::whereNull('collector_id')
+      ->where('status', 'pending')
+      ->findOrFail($id);
+
+    $report->update([
+      'collector_id' => $userId,
+      'collected_at' => now(),
+      'status' => 'processed'
+    ]);
+
+    return redirect()
+      ->route('collector.waste-reports.my-reports')
+      ->with('success', 'Laporan berhasil diambil!');
   }
 
   public function updateStatus(Request $request, WasteReport $report)
@@ -39,15 +70,17 @@ class WasteReportController extends Controller
 
   public function complete($id)
   {
-    $report = WasteReport::where('status', 'processed')
+    $report = WasteReport::where('collector_id', auth()->user()->id)
+      ->where('status', 'processed')
       ->findOrFail($id);
 
     $report->update([
       'status' => 'completed',
-      'completed_at' => now()
+      // 'completed_at' => now()
     ]);
 
-    session()->flash('success', 'Laporan berhasil diselesaikan!');
-    return redirect()->route('collector.waste-reports.index');
+    return redirect()
+      ->route('collector.waste-reports.my-reports')
+      ->with('success', 'Laporan berhasil diselesaikan!');
   }
 }

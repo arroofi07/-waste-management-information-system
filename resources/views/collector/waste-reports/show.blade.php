@@ -1,179 +1,123 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <!-- Header dengan Breadcrumb -->
-  <div class="mb-8 flex justify-between items-center">
-    <div>
-      <h2 class="text-2xl font-bold text-gray-900">Detail Laporan Sampah</h2>
-      <div class="mt-1 flex items-center text-sm text-gray-500">
-        <a href="{{ route('collector.waste-reports.index') }}" class="hover:text-blue-500">Daftar Laporan</a>
-        <svg class="mx-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold text-gray-900">Detail Laporan</h1>
+      <a href="{{ route('collector.waste-reports.my-reports') }}"
+        class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        <span>Detail Laporan #{{ $report->id }}</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-    <!-- Status Banner -->
-    <div class="bg-blue-500 px-6 py-4">
-      <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-        </div>
-        <div class="ml-3">
-          <h3 class="text-lg font-medium text-white">Laporan Sampah </h3>
-          <p class="text-blue-100">Dilaporkan pada {{ $report->created_at->format('d M Y H:i') }}</p>
-        </div>
-      </div>
+        Kembali
+      </a>
     </div>
 
-    <div class="p-6">
-      <!-- Grid Layout untuk Informasi -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Informasi Laporan -->
-        <div class="bg-gray-50 p-6 rounded-lg">
-          <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-            <svg class="h-5 w-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Informasi Laporan
-          </h3>
-          <dl class="space-y-4">
-            <div>
-              <dt class="text-sm font-medium text-gray-500">Status</dt>
-              <dd class="mt-1">
-                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                  Diproses
-                </span>
-              </dd>
-            </div>
-            <div>
-              <dt class="text-sm font-medium text-gray-500">Jenis Sampah</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ $report->waste_type }}</dd>
-            </div>
-          </dl>
-        </div>
-
-        <!-- Informasi Lokasi -->
-        <div class="bg-gray-50 p-6 rounded-lg">
-          <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-            <svg class="h-5 w-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Lokasi
-          </h3>
-          <dl class="space-y-4">
-            <div>
-              <dt class="text-sm font-medium text-gray-500">Alamat Lengkap</dt>
-              <dd class="mt-1 text-sm text-gray-900">{{ $report->location }}</dd>
-            </div>
-            <div>
-              <dt class="text-sm font-medium text-gray-500">Petunjuk Maps</dt>
-              <dd class="mt-1">
-                <a href="https://www.google.com/maps?q={{ $report->latitude }},{{ $report->longitude }}"
-                  target="_blank"
-                  class="inline-flex items-center px-4 py-2 border border-blue-500 text-sm font-medium rounded-md text-blue-500 hover:bg-blue-50">
-                  <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Buka di Google Maps
-                </a>
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-
-      <!-- Foto Sampah -->
-      <div class="mt-8">
-        <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-          <svg class="h-5 w-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          Foto Sampah
-        </h3>
-        <div class="bg-gray-50 p-6 rounded-lg">
-          @if($report->photo)
-          <img src="{{ asset('storage/' . $report->photo) }}"
-            alt="Foto Sampah"
-            class="rounded-lg shadow-md max-w-full h-auto">
-          @else
-          <div class="text-center py-8">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <p class="mt-2 text-sm text-gray-500">Tidak ada foto yang dilampirkan</p>
+    <!-- Main Content -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        <!-- Image Section -->
+        <div class="relative h-[400px] lg:h-full">
+          <img src="{{ Storage::url($report->photo) }}"
+            class="w-full h-full object-cover"
+            alt="Lokasi Sampah">
+          <div class="absolute top-4 right-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+              {{ $report->status === 'processed' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="{{ $report->status === 'processed' ? 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' : 'M5 13l4 4L19 7' }}" />
+              </svg>
+              {{ $report->status === 'processed' ? 'Dalam Proses' : 'Selesai' }}
+            </span>
           </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="p-6 lg:p-8">
+          <!-- Location -->
+          <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-2">Lokasi</h2>
+            <p class="text-gray-700 mb-4">{{ $report->location }}</p>
+
+            <!-- Map Links -->
+            <div class="grid grid-cols-2 gap-3">
+              <a href="https://www.google.com/maps/dir/?api=1&destination={{ $report->latitude }},{{ $report->longitude }}"
+                target="_blank"
+                class="inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                Google Maps
+              </a>
+              <a href="https://waze.com/ul?ll={{ $report->latitude }},{{ $report->longitude }}&navigate=yes"
+                target="_blank"
+                class="inline-flex items-center justify-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors duration-200">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Waze
+              </a>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-2">Deskripsi</h2>
+            <p class="text-gray-700">{{ $report->description }}</p>
+          </div>
+
+          <!-- Coordinates -->
+          <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-2">Koordinat</h2>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Latitude</p>
+                  <p class="font-mono text-gray-700">{{ $report->latitude }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Longitude</p>
+                  <p class="font-mono text-gray-700">{{ $report->longitude }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timestamps -->
+          <div class="mb-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Dilaporkan</p>
+                <p class="text-gray-700">{{ $report->created_at->format('d M Y H:i') }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Diambil</p>
+                <p class="text-gray-700">{{ $report->collected_at->format('d M Y H:i') }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          @if($report->status === 'processed')
+          <form action="{{ route('collector.waste-reports.complete', $report->id) }}"
+            method="POST"
+            class="mt-6">
+            @csrf
+            <button type="submit"
+              class="w-full inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Selesaikan Laporan
+            </button>
+          </form>
           @endif
         </div>
       </div>
-
-      <!-- Tombol Aksi -->
-      <div class="mt-8 flex justify-end">
-        <button onclick="showModal('/collector/waste-reports/{{ $report->id }}/complete')"
-          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-          <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          Selesaikan Pengangkutan
-        </button>
-      </div>
     </div>
   </div>
 </div>
-
-<!-- Modal Konfirmasi -->
-<div id="confirmationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
-  <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-    <div class="mt-3 text-center">
-      <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-      </div>
-      <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Konfirmasi Pengangkutan</h3>
-      <div class="mt-2 px-7 py-3">
-        <p class="text-sm text-gray-500">Apakah Anda yakin sampah sudah diangkut?</p>
-      </div>
-      <div class="items-center px-4 py-3">
-        <form id="completeForm" method="POST">
-          @csrf
-          <button type="submit"
-            class="w-full px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 mb-2">
-            Ya, Selesai
-          </button>
-        </form>
-        <button onclick="closeModal()"
-          class="w-full px-4 py-2 bg-gray-400 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300">
-          Batal
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  function showModal(formAction) {
-    document.getElementById('confirmationModal').classList.remove('hidden');
-    document.getElementById('completeForm').action = formAction;
-  }
-
-  function closeModal() {
-    document.getElementById('confirmationModal').classList.add('hidden');
-  }
-
-  window.onclick = function(event) {
-    let modal = document.getElementById('confirmationModal');
-    if (event.target == modal) {
-      closeModal();
-    }
-  }
-</script>
 @endsection

@@ -9,7 +9,7 @@ use App\Http\Middleware\AdminMiddleware;
 
 // Welcome page
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 // Guest Routes (Login & Register)
@@ -47,10 +47,23 @@ Route::middleware('guest')->group(function () {
 
 // Route untuk halaman collector setelah login
 Route::prefix('collector')->name('collector.')->middleware('auth')->group(function () {
+    // Daftar report yang tersedia (belum diambil)
     Route::get('/waste-reports', [App\Http\Controllers\Collector\WasteReportController::class, 'index'])
         ->name('waste-reports.index');
+
+    // Daftar report yang sudah diambil oleh collector yang login
+    Route::get('/waste-reports/my', [App\Http\Controllers\Collector\WasteReportController::class, 'myReports'])
+        ->name('waste-reports.my-reports');
+
+    // Mengambil report
+    Route::post('/waste-reports/{id}/take', [App\Http\Controllers\Collector\WasteReportController::class, 'takeReport'])
+        ->name('waste-reports.take');
+
+    // Melihat detail report (hanya untuk report yang sudah diambil)
     Route::get('/waste-reports/{id}', [App\Http\Controllers\Collector\WasteReportController::class, 'show'])
         ->name('waste-reports.show');
+
+    // Menyelesaikan report
     Route::post('/waste-reports/{id}/complete', [App\Http\Controllers\Collector\WasteReportController::class, 'complete'])
         ->name('waste-reports.complete');
 });
