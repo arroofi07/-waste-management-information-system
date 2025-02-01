@@ -28,15 +28,18 @@ class AuthController extends Controller
 
     if (Auth::attempt($credentials)) {
       $request->session()->regenerate();
+      $user = Auth::user();
 
-      // Cek jika user adalah admin
-      if (Auth::user()->email === 'fahmi@gmail.com') {
+      if ($user->role === 'admin') {
         session()->flash('success', 'Selamat datang Admin!');
         return redirect()->route('admin.waste-reports.index');
+      } elseif ($user->role === 'collector') {
+        session()->flash('success', 'Selamat datang Pengangkut Sampah!');
+        return redirect()->route('collector.waste-reports.index');
+      } else {
+        session()->flash('success', 'Berhasil login!');
+        return redirect()->route('waste-reports.index');
       }
-
-      session()->flash('success', 'Berhasil login!');
-      return redirect()->route('waste-reports.index');
     }
 
     return back()->withErrors([

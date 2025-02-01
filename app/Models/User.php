@@ -21,9 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'phone_number',
-        'address',
         'role',
+        'phone_number',
+        'vehicle_number',
+        'vehicle_type',
+        'address',
         'reward_points'
     ];
 

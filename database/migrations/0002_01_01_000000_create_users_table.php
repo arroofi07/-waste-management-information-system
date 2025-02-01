@@ -15,7 +15,7 @@ return new class extends Migration
       $table->string('password');
       $table->string('phone_number', 15)->nullable();
       $table->text('address')->nullable();
-      $table->enum('role', ['admin', 'petugas', 'masyarakat'])->default('masyarakat');
+      $table->enum('role', ['admin', 'collector', 'masyarakat'])->default('masyarakat');
       $table->integer('reward_points')->default(0);
       $table->rememberToken();
       $table->timestamps();

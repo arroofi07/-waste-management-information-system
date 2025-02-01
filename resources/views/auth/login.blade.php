@@ -1,12 +1,15 @@
-@extends('layouts.auth')
+@extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center">
-  <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
-    <div>
-      <h2 class="text-center text-3xl font-extrabold text-gray-900">Login</h2>
+<div class="min-h-screen flex flex-col items-center pt-6 sm:pt-0 bg-gray-100">
+  <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <div class="mb-6 text-center">
+      <h2 class="text-2xl font-bold text-gray-900">
+        Login
+      </h2>
     </div>
-    <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}">
+
+    <form method="POST" action="{{ route('login') }}">
       @csrf
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
@@ -25,25 +28,48 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between mb-4">
         <div class="flex items-center">
-          <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-          <label for="remember" class="ml-2 block text-sm text-gray-900">Remember me</label>
+          <input type="checkbox" name="remember" id="remember" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          <label for="remember" class="ml-2 block text-sm text-gray-700">Ingat Saya</label>
         </div>
+
+        @if (Route::has('password.request'))
+        <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:text-blue-500">
+          Lupa Password?
+        </a>
+        @endif
       </div>
 
-      <div>
-        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+      <div class="mb-6">
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
           Login
         </button>
       </div>
-
-      <div class="text-center">
-        <a href="{{ route('register') }}" class="text-sm text-blue-600 hover:text-blue-500">
-          Belum punya akun? Register
-        </a>
-      </div>
     </form>
+
+    <div class="relative mb-6">
+      <div class="absolute inset-0 flex items-center">
+        <div class="w-full border-t border-gray-300"></div>
+      </div>
+      <div class="relative flex justify-center text-sm">
+        <span class="bg-white px-2 text-gray-500">atau</span>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <a href="{{ route('register') }}" class="w-full block text-center bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded-md border border-gray-300">
+        Daftar sebagai Pengguna
+      </a>
+
+      <a href="{{ route('register.collector') }}" class="w-full block text-center bg-green-50 hover:bg-green-100 text-green-700 font-semibold py-2 px-4 rounded-md border border-green-300">
+        Daftar sebagai Pengangkut Sampah
+      </a>
+    </div>
+
+    <div class="mt-6 text-center text-sm text-gray-600">
+      Dengan mendaftar, Anda menyetujui syarat dan ketentuan yang berlaku
+    </div>
   </div>
 </div>
 @endsection

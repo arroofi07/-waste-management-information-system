@@ -7,6 +7,19 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
   /**
+   * The application's global HTTP middleware stack.
+   *
+   * @var array
+   */
+  protected $middleware = [
+    // \App\Http\Middleware\TrustHosts::class,
+    \Illuminate\Http\Middleware\HandleCors::class,
+    \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+    \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+    \App\Http\Middleware\CollectorMiddleware::class,
+  ];
+
+  /**
    * The application's route middleware.
    *
    * These middleware may be assigned to groups or used individually.
@@ -14,17 +27,19 @@ class Kernel extends HttpKernel
    * @var array<string, class-string|string>
    */
   protected $routeMiddleware = [
-    // ... existing middlewares ...
+    'auth' => \App\Http\Middleware\Authenticate::class,
+    'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+    'collector' => \App\Http\Middleware\CollectorMiddleware::class,
     'role' => \App\Http\Middleware\CheckRole::class,
   ];
 
   protected $middlewareGroups = [
     'web' => [
-      \App\Http\Middleware\EncryptCookies::class,
+      \Illuminate\Cookie\Middleware\EncryptCookies::class,
       \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
       \Illuminate\Session\Middleware\StartSession::class,
       \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-      \App\Http\Middleware\VerifyCsrfToken::class,
+      \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
       \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
 
@@ -42,9 +57,9 @@ class Kernel extends HttpKernel
     'can' => \Illuminate\Auth\Middleware\Authorize::class,
     'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
-    'signed' => \App\Http\Middleware\ValidateSignature::class,
     'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     'admin' => \App\Http\Middleware\AdminMiddleware::class,
+    'collector' => \App\Http\Middleware\CollectorMiddleware::class,
   ];
 }

@@ -21,15 +21,15 @@ class WasteReportController extends Controller
   {
     $report = WasteReport::findOrFail($id);
 
-    $request->validate([
-      'status' => 'required|in:pending,active,completed'
-    ]);
+    // Pastikan status yang dikirim sesuai dengan yang ada di database
+    if (in_array($request->status, ['pending', 'processed', 'completed'])) {
+      $report->status = $request->status;  // Set langsung tanpa forceFill
+      $report->save();
 
-    $report->update([
-      'status' => $request->status
-    ]);
+      return back()->with('success', 'Status berhasil diupdate');
+    }
 
-    return back()->with('success', 'Status berhasil diupdate');
+    return back()->with('error', 'Status tidak valid');
   }
 
   public function show($id)
