@@ -11,7 +11,7 @@ class WasteReportController extends Controller
   public function index()
   {
     $reports = WasteReport::whereNull('collector_id')
-      ->where('status', 'pending')
+      ->where('status', 'processed')
       ->orderBy('created_at', 'desc')
       ->paginate(10);
 

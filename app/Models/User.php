@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(WasteReport::class);
     }
+
+    public function collections()
+    {
+        return $this->hasMany(WasteReport::class, 'collector_id');
+    }
 }

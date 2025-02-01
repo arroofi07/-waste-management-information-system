@@ -30,12 +30,25 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(function () {
+    // Dashboard route
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])
+        ->name('admin.dashboard');
+
+    // Collector routes
+    Route::resource('collectors',   App\Http\Controllers\Admin\CollectorController::class, [
+        'as' => 'admin'
+    ]);
+
+    // Existing waste report routes
     Route::get('/waste-reports', [App\Http\Controllers\Admin\WasteReportController::class, 'index'])
         ->name('admin.waste-reports.index');
     Route::patch('/waste-reports/{id}/status', [App\Http\Controllers\Admin\WasteReportController::class, 'updateStatus'])
         ->name('admin.waste-reports.update-status');
     Route::get('/waste-reports/{id}', [App\Http\Controllers\Admin\WasteReportController::class, 'show'])
         ->name('admin.waste-reports.show');
+
+    Route::get('/statistics', [App\Http\Controllers\Admin\StatisticsController::class, 'index'])
+        ->name('admin.statistics');
 });
 
 // Route untuk registrasi pengangkut sampah
