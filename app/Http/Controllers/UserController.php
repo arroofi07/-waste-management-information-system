@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -63,5 +64,29 @@ class UserController extends Controller
   {
     $user->delete();
     return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
+  }
+
+  public function register(Request $request)
+  {
+    $request->validate([
+      'name' => 'required|string|max:255',
+      'email' => 'required|string|email|unique:users',
+      'password' => 'required|string|min:8|confirmed',
+      'phone_number' => 'required|string|max:15',
+      'address' => 'required|string'
+    ]);
+
+    $user = User::create([
+      'name' => $request->name,
+      'email' => $request->email,
+      'password' => Hash::make($request->password),
+      'phone_number' => $request->phone_number,
+      'address' => $request->address,
+      'role' => 'masyarakat'
+    ]);
+
+    Auth::login($user);
+
+    return redirect()->route('waste-reports.index')->with('success', 'Registrasi berhasil');
   }
 }

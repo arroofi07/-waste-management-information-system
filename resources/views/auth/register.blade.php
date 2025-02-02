@@ -16,7 +16,7 @@
       <p class="mt-2 text-sm text-gray-600">Daftar sebagai pengguna untuk mulai menggunakan aplikasi</p>
     </div>
 
-    <form method="POST" action="{{ route('register.collector') }}" class="mt-8 space-y-6">
+    <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6">
       @csrf
       <div class="rounded-md shadow-sm space-y-4">
         <div>

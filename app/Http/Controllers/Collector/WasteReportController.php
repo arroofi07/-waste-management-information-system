@@ -41,7 +41,7 @@ class WasteReportController extends Controller
   {
     $userId = auth()->id();
     $report = WasteReport::whereNull('collector_id')
-      ->where('status', 'pending')
+      ->where('status', 'processed')
       ->findOrFail($id);
 
     $report->update([
